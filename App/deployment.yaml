@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: om-flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: om-flask-app
+  template:
+    metadata:
+      labels:
+        app: om-flask-app
+    spec:
+      containers:
+        - name: om-flask-app
+          image: 443920089484.dkr.ecr.us-east-1.amazonaws.com/om-flask-app:latest
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: om-flask-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: om-flask-app
+  ports:
+    - port: 80
+      targetPort: 5000
