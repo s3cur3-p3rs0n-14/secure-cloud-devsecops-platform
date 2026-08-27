@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t om-flask-app:scan ./app
+        run: docker build -t om-flask-app:scan ./App
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
