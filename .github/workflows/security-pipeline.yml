@@ -37,3 +37,15 @@ jobs:
         with:
           directory: infrastructure
           framework: terraform
+
+  semgrep-scan:
+    name: Semgrep SAST Scan
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        run: semgrep scan --config=auto --error ./App
