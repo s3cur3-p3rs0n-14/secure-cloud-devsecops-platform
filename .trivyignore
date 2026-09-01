@@ -6,3 +6,13 @@
 # exercised internally by pip during the Docker build. Accepted as
 # residual risk pending an upstream pip release. Recheck periodically.
 GHSA-6v7p-g79w-8964
+
+# CVE-2025-47273 - setuptools (vendored inside pip's internal tooling)
+# Confirmed via pip's own vendor.txt (github.com/pypa/pip) that the current
+# pip release still vendors setuptools==70.3.0 internally - a separate,
+# internal copy distinct from this image's actual installed setuptools
+# (upgraded to 84.0.0). Not fixable via requirements.txt or --upgrade,
+# since it's bundled in pip's own source. No runtime code path in this
+# app; only exercised internally by pip during the Docker build. Accepted
+# as residual risk pending an upstream pip release. Recheck periodically.
+CVE-2025-47273
