@@ -1,0 +1,8 @@
+# GHSA-6v7p-g79w-8964 - msgpack (vendored inside pip's internal tooling)
+# Confirmed via pip's own vendor.txt (github.com/pypa/pip) that the current
+# pip release still vendors msgpack==1.1.2 internally - not fixable via
+# requirements.txt or --upgrade, since it's bundled in pip's own source,
+# not a normal installed package. No runtime code path in this app; only
+# exercised internally by pip during the Docker build. Accepted as
+# residual risk pending an upstream pip release. Recheck periodically.
+GHSA-6v7p-g79w-8964
