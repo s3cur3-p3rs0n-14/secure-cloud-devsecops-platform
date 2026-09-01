@@ -17,6 +17,9 @@ spec:
           image: 443920089484.dkr.ecr.us-east-1.amazonaws.com/om-flask-app:latest
           ports:
             - containerPort: 5000
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Service
