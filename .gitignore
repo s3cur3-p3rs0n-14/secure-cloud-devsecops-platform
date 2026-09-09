@@ -1,2 +1,5 @@
 infrastructure/.terraform/ infrastructure/terraform.tfstate
 infrastructure/terraform.tfstate.backup *.tfvars __pycache__/ *.pyc
+*.tfstate
+*.tfstate.backup
+.terraform/

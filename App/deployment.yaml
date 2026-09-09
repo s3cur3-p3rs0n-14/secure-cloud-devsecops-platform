@@ -14,11 +14,12 @@ spec:
     spec:
       containers:
         - name: om-flask-app
-          image: 443920089484.dkr.ecr.us-east-1.amazonaws.com/om-flask-app:latest
+          image: 443920089484.dkr.ecr.us-east-1.amazonaws.com/om-flask-app:v4
           ports:
             - containerPort: 5000
           securityContext:
             runAsNonRoot: true
+            runAsUser: 1001
             allowPrivilegeEscalation: false
 ---
 apiVersion: v1
