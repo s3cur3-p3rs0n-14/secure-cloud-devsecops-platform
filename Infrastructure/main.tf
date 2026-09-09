@@ -149,7 +149,7 @@ resource "aws_guardduty_detector_feature" "eks_runtime_monitoring" {
 }
 
 resource "aws_securityhub_account" "main" {
-  enable_default_standards = true
+  enable_default_standards = false
 }
 
 resource "aws_securityhub_standards_subscription" "cis" {
@@ -402,6 +402,10 @@ resource "aws_iam_role_policy_attachment" "eks_node_ecr_policy" {
 # AWS Config checks or setup 
 resource "aws_iam_service_linked_role" "config" {
   aws_service_name = "config.amazonaws.com"
+
+  lifecycle {
+    ignore_changes = [aws_service_name]
+  }
 }
 
 resource "aws_s3_bucket" "config_logs" {
