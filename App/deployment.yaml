@@ -27,9 +27,30 @@ kind: Service
 metadata:
   name: om-flask-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: om-flask-app
   ports:
     - port: 80
       targetPort: 5000
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: om-flask-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: om-flask-service
+                port:
+                  number: 5000
