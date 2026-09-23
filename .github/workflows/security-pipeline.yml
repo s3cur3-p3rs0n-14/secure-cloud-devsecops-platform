@@ -49,3 +49,48 @@ jobs:
 
       - name: Run Semgrep
         run: semgrep scan --config=auto --error ./App
+
+  dependency-check:
+    name: OWASP Dependency-Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'om-flask-app'
+          path: './App'
+          format: 'HTML'
+          out: 'reports'
+
+      - name: Upload Dependency-Check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: reports
+
+          
+  sbom-generation:
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t om-flask-app:sbom ./App
+
+      - name: Generate SBOM with Syft
+        uses: anchore/sbom-action@v0
+        with:
+          image: 'om-flask-app:sbom'
+          format: 'cyclonedx-json'
+          output-file: 'sbom.json'
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json

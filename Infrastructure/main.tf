@@ -239,6 +239,28 @@ resource "aws_wafv2_web_acl" "main" {
     metric_name                = "landingZoneWebAcl"
     sampled_requests_enabled   = true
   }
+
+  rule {
+    name     = "AWS-AWSManagedRulesSQLiRuleSet"
+    priority = 3
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesSQLiRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "sqliRuleSetMetric"
+      sampled_requests_enabled   = true
+    }
+  }
 }
 
 resource "aws_ecr_repository" "om_flask_app" {
@@ -484,4 +506,21 @@ resource "aws_ssm_service_setting" "block_public_sharing" {
 resource "aws_inspector2_enabler" "ecr_scanning" {
   account_ids    = [data.aws_caller_identity.current.account_id]
   resource_types = ["ECR"]
+}
+
+
+resource "aws_wafv2_web_acl_association" "app_alb" {
+  resource_arn = "arn:aws:elasticloadbalancing:us-east-1:443920089484:loadbalancer/app/k8s-default-omflaski-5bb075b295/4ab1daeadc602d7a"
+  web_acl_arn = aws_wafv2_web_acl.main.arn
+}
+
+
+resource "aws_cloudwatch_log_group" "waf_logs" {
+  name              = "aws-waf-logs-app" 
+  retention_in_days = 30
+}
+
+resource "aws_wafv2_web_acl_logging_configuration" "main" {
+  log_destination_configs = [aws_cloudwatch_log_group.waf_logs.arn]
+  resource_arn            = aws_wafv2_web_acl.main.arn
 }
