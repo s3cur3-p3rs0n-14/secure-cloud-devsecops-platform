@@ -14,7 +14,7 @@ The project has three layers that work together.
 
 **Delivery layer.** A Dockerized Flask app, deployed to EKS behind an AWS Application Load Balancer provisioned by the AWS Load Balancer Controller, with a GitHub Actions pipeline that runs Trivy, Checkov, Semgrep, OWASP Dependency Check, and SBOM generation on every push to main.
 
-## Why It Matters
+## Learning
 
 This project maps directly to real job requirements for cloud security and DevSecOps roles: identity and access design, detection and compliance tooling, network segmentation, container hardening, vulnerability triage, and security automation, all built and debugged end to end by one person rather than assembled from a tutorial.
 
